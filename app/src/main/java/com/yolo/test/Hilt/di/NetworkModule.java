@@ -1,4 +1,4 @@
-package com.yolo.test.Hilt.Modules;
+package com.yolo.test.Hilt.di;
 
 import com.yolo.test.common.Constants;
 import com.yolo.test.data.remote.ApiClient;

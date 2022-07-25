@@ -1,4 +1,4 @@
-package com.yolo.test.Hilt.Modules;
+package com.yolo.test.Hilt.di;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
