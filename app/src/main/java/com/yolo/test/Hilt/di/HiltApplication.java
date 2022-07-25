@@ -1,4 +1,4 @@
-package com.yolo.test.Hilt;
+package com.yolo.test.Hilt.di;
 
 import android.app.Application;
 
