@@ -13,18 +13,15 @@ import dagger.hilt.android.qualifiers.ActivityContext;
 
 @Module
 @InstallIn(ActivityComponent.class)
-public class HomeModule
-{
+public class HomeModule {
     @Provides
-    ConnectivityManager connectivityManager(@ActivityContext Context context)
-    {
+    ConnectivityManager connectivityManager(@ActivityContext Context context) {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
     }
 
     @Provides
-    NetworkRequest networkRequest()
-    {
+    NetworkRequest networkRequest() {
         return new NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build();
     }
 

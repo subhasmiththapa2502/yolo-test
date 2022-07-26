@@ -1,6 +1,6 @@
 package com.yolo.test.data.repository;
 
-import com.yolo.test.Models.MovieModel.Movie;
+import com.yolo.test.Models.Movie;
 import com.yolo.test.data.remote.ApiClient;
 
 import java.util.concurrent.Callable;
@@ -18,24 +18,56 @@ public class AppRepository {
 
     ApiClient apiClient;
 
-
     public AppRepository(ApiClient apiClient) {
         this.apiClient = apiClient;
     }
 
 
+    public Future<Observable<Movie>> latestMovieFutureCall() {
+        final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+
+        final Callable<Observable<Movie>> latestMovieCallable = () -> apiClient.getLatestMovie();
+
+
+        return new Future<Observable<Movie>>() {
+            @Override
+            public boolean cancel(boolean b) {
+                if (b) {
+                    return executorService.isShutdown();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean isCancelled() {
+                return executorService.isShutdown();
+            }
+
+            @Override
+            public boolean isDone() {
+                return executorService.isTerminated();
+            }
+
+            @Override
+            public Observable<Movie> get() throws ExecutionException, InterruptedException {
+                return executorService.submit(latestMovieCallable).get();
+            }
+
+            @Override
+            public Observable<Movie> get(long timeout, TimeUnit timeUnit) throws ExecutionException, InterruptedException, TimeoutException {
+                return executorService.submit(latestMovieCallable).get(timeout, timeUnit);
+            }
+        };
+    }
+
     public Future<Observable<Movie>> popularFutureCall() {
         final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        final Callable<Observable<Movie>> popularCallable = new Callable<Observable<Movie>>() {
-            @Override
-            public Observable<Movie> call() throws Exception {
-                return apiClient.getPopular();
-            }
-        };
+        final Callable<Observable<Movie>> popularCallable = () -> apiClient.getPopular();
 
 
-        final Future<Observable<Movie>> popularFuture = new Future<Observable<Movie>>() {
+        return new Future<Observable<Movie>>() {
             @Override
             public boolean cancel(boolean b) {
                 if (b) {
@@ -65,24 +97,53 @@ public class AppRepository {
             }
         };
 
-
-        return popularFuture;
-
     }
 
+    public Future<Observable<Movie>> topRatedFutureCall() {
+        final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        final Callable<Observable<Movie>> topRatedCallable = () -> apiClient.getTopRated();
+
+
+        return new Future<Observable<Movie>>() {
+            @Override
+            public boolean cancel(boolean b) {
+                if (b) {
+                    return executorService.isShutdown();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean isCancelled() {
+                return executorService.isShutdown();
+            }
+
+            @Override
+            public boolean isDone() {
+                return executorService.isTerminated();
+            }
+
+            @Override
+            public Observable<Movie> get() throws ExecutionException, InterruptedException {
+                return executorService.submit(topRatedCallable).get();
+            }
+
+            @Override
+            public Observable<Movie> get(long timeOut, TimeUnit timeUnit) throws ExecutionException, InterruptedException, TimeoutException {
+                return executorService.submit(topRatedCallable).get(timeOut, timeUnit);
+            }
+        };
+
+    }
 
     public Future<Observable<Movie>> upComingFutureCall() {
         final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        final Callable<Observable<Movie>> popularCallable = new Callable<Observable<Movie>>() {
-            @Override
-            public Observable<Movie> call() throws Exception {
-                return apiClient.getUpComing();
-            }
-        };
+        final Callable<Observable<Movie>> popularCallable = () -> apiClient.getUpComing();
 
 
-        final Future<Observable<Movie>> upComingFuture = new Future<Observable<Movie>>() {
+        return new Future<Observable<Movie>>() {
             @Override
             public boolean cancel(boolean b) {
                 if (b) {
@@ -111,9 +172,6 @@ public class AppRepository {
                 return executorService.submit(popularCallable).get(timeOut, timeUnit);
             }
         };
-
-
-        return upComingFuture;
 
     }
 

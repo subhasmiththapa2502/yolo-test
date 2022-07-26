@@ -82,4 +82,15 @@ dependencies {
     implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$RxJavaAdopter_version"
 
     //----------------------------------------------------------------------------------------------
+    //Alert Dialog
+    def alert_version = "1.3.6"
+    implementation "com.github.gabriel-TheCode:AestheticDialogs:$alert_version"
+
+    //----------------------------------------------------------------------------------------------
+    //Expandable Layout
+    def expandableLayout        = "2.9.2"
+    implementation "com.github.cachapa:ExpandableLayout:$expandableLayout"
+
+    //----------------------------------------------------------------------------------------------
+
 }
