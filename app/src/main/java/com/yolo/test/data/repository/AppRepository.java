@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.Call;
 
 
 public class AppRepository {
@@ -175,5 +176,22 @@ public class AppRepository {
 
     }
 
+    public Call<Movie> getPopularOnce()
+    {
+        return apiClient.getPopularOnce();
+    }
+    public Call<Movie> getTopRatedOnce()
+    {
+        return apiClient.getTopRatedOnce();
+    }
+
+    public Call<Movie> getUpComingOnce()
+    {
+        return apiClient.getUpComingOnce();
+    }
+    public Call<Movie> getLatestMovieOnce()
+    {
+        return apiClient.getLatestMovieOnce();
+    }
 
 }

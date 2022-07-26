@@ -45,6 +45,9 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @AndroidEntryPoint
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -52,6 +55,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     MainActivity mainActivity;
     AppViewModel appViewModel;
     CompositeDisposable compositeDisposable;
+    CompositeDisposable compositeDisposableLatestMovies;
 
     LatestMovieAdapter latestMovieAdapter;
     TopRatedMovieAdapter topRatedMovieAdapter;
@@ -83,6 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         appViewModel = new ViewModelProvider(requireActivity()).get(AppViewModel.class);
 
         compositeDisposable = new CompositeDisposable();
+        compositeDisposableLatestMovies = new CompositeDisposable();
 
 
         fragmentHomeBinding.latestMovieText.setOnClickListener(this);
@@ -96,9 +101,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return fragmentHomeBinding.getRoot();
     }
 
+    private void getLatestMovieOnce(){
+        appViewModel.makeLatestMovieCall().enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> trending) {
+                fragmentHomeBinding.latestMovieText.setVisibility(View.VISIBLE);
+                if (fragmentHomeBinding.latestMovieRecycleView.getAdapter() != null) {
+                    latestMovieAdapter = (LatestMovieAdapter) fragmentHomeBinding.latestMovieRecycleView.getAdapter();
+                    assert trending.body() != null;
+                    latestMovieAdapter.updateTrending(trending.body().getResults());
+                } else {
+                    assert trending.body() != null;
+                    latestMovieAdapter = new LatestMovieAdapter(trending.body().getResults());
+                    fragmentHomeBinding.latestMovieRecycleView.setAdapter(latestMovieAdapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+    }
     private void getLatestMovie() {
 
-        Observable.interval(1, TimeUnit.MILLISECONDS)
+        Observable.interval(30, TimeUnit.SECONDS)
                 .flatMap(n -> appViewModel.makeLatestMovieFutureCall().get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -106,11 +134,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
                         Log.d("######", "onSubscribe");
-                        compositeDisposable.add(d);
+                        compositeDisposableLatestMovies.add(d);
                     }
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull Movie trending) {
+
                         fragmentHomeBinding.latestMovieText.setVisibility(View.VISIBLE);
                         if (fragmentHomeBinding.latestMovieRecycleView.getAdapter() != null) {
                             latestMovieAdapter = (LatestMovieAdapter) fragmentHomeBinding.latestMovieRecycleView.getAdapter();
@@ -135,119 +164,83 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 });
     }
 
-    private void getPopular() {
-        Observable.interval(1, TimeUnit.MILLISECONDS)
-                .flatMap(n -> appViewModel.makePopularFutureCall().get())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Movie>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
+    private void getPopularOnce() {
+        appViewModel.makePopularCall().enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> popular) {
+                fragmentHomeBinding.popularText.setVisibility(View.VISIBLE);
+                if (fragmentHomeBinding.popularRecycleView.getAdapter() != null) {
+                    popularAdapter = (PopularAdapter) fragmentHomeBinding.popularRecycleView.getAdapter();
+                    assert popular.body() != null;
+                    popularAdapter.updatePopular(popular.body().getResults());
 
-                    @Override
-                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull Movie popular) {
-                        fragmentHomeBinding.popularText.setVisibility(View.VISIBLE);
-                        if (fragmentHomeBinding.popularRecycleView.getAdapter() != null) {
-                            popularAdapter = (PopularAdapter) fragmentHomeBinding.popularRecycleView.getAdapter();
-                            popularAdapter.updatePopular(popular.getResults());
+                } else {
+                    assert popular.body() != null;
+                    popularAdapter = new PopularAdapter(popular.body().getResults());
+                    fragmentHomeBinding.popularRecycleView.setAdapter(popularAdapter);
 
-                        } else {
-                            popularAdapter = new PopularAdapter(popular.getResults());
-                            fragmentHomeBinding.popularRecycleView.setAdapter(popularAdapter);
+                }
+            }
 
-                        }
-                    }
+            @Override
+            public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
 
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    private void getTopRated() {
-        Observable.interval(1, TimeUnit.MILLISECONDS)
-                .flatMap(n -> appViewModel.makeTopRatedFutureCall().get())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Movie>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull Movie popular) {
-                        fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.GONE);
-                        fragmentHomeBinding.topRatedText.setVisibility(View.VISIBLE);
-                        if (fragmentHomeBinding.topRatedRecycleView.getAdapter() != null) {
-                            topRatedMovieAdapter = (TopRatedMovieAdapter) fragmentHomeBinding.topRatedRecycleView.getAdapter();
-                            topRatedMovieAdapter.updateTopRated(popular.getResults());
-
-                        } else {
-                            topRatedMovieAdapter = new TopRatedMovieAdapter(popular.getResults());
-                            fragmentHomeBinding.topRatedRecycleView.setAdapter(topRatedMovieAdapter);
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+            }
+        });
     }
 
 
-    private void getUpcoming() {
-        Observable.interval(1, TimeUnit.MILLISECONDS)
-                .flatMap(n -> appViewModel.makeUpComingFutureCall().get())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Movie>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
+    private void getTopRatedOnce() {
+        appViewModel.makeTopRatedCall().enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> popular) {
+                fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.GONE);
+                fragmentHomeBinding.topRatedText.setVisibility(View.VISIBLE);
+                if (fragmentHomeBinding.topRatedRecycleView.getAdapter() != null) {
+                    topRatedMovieAdapter = (TopRatedMovieAdapter) fragmentHomeBinding.topRatedRecycleView.getAdapter();
+                    assert popular.body() != null;
+                    topRatedMovieAdapter.updateTopRated(popular.body().getResults());
+                } else {
+                    assert popular.body() != null;
+                    topRatedMovieAdapter = new TopRatedMovieAdapter(popular.body().getResults());
+                    fragmentHomeBinding.topRatedRecycleView.setAdapter(topRatedMovieAdapter);
 
-                    @Override
-                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull Movie upComing) {
-                        fragmentHomeBinding.upComingText.setVisibility(View.VISIBLE);
-                        fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.GONE);
-                        if (fragmentHomeBinding.upComingRecycleView.getAdapter() != null) {
-                            upComingAdopter = (UpComingAdapter) fragmentHomeBinding.upComingRecycleView.getAdapter();
-                            upComingAdopter.updateUpcoming(upComing.getResults());
+                }
+            }
 
-                        } else {
-                            upComingAdopter = new UpComingAdapter(upComing.getResults());
-                            fragmentHomeBinding.upComingRecycleView.setAdapter(upComingAdopter);
+            @Override
+            public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
 
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Log.e("TAG", "Error:  " + e.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+            }
+        });
     }
+
+
+    private void getUpComingOnce() {
+        appViewModel.makeUpComingCall().enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> upComing) {
+                fragmentHomeBinding.upComingText.setVisibility(View.VISIBLE);
+                fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.GONE);
+                if (fragmentHomeBinding.upComingRecycleView.getAdapter() != null) {
+                    upComingAdopter = (UpComingAdapter) fragmentHomeBinding.upComingRecycleView.getAdapter();
+                    assert upComing.body() != null;
+                    upComingAdopter.updateUpcoming(upComing.body().getResults());
+                } else {
+                    assert upComing.body() != null;
+                    upComingAdopter = new UpComingAdapter(upComing.body().getResults());
+                    fragmentHomeBinding.upComingRecycleView.setAdapter(upComingAdopter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
 
 
     private void checkConnection() {
@@ -255,8 +248,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onAvailable(@androidx.annotation.NonNull Network network) {
+                getLatestMovieOnce();
                 getLatestMovie();
-                getPopular();
+                getPopularOnce();
             }
 
             @Override
@@ -285,7 +279,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         if (v.getId() == R.id.latestMovieText) {
             if (fragmentHomeBinding.expandableLatestMovies.getState() == ExpandableLayout.State.EXPANDED) {
                 fragmentHomeBinding.expandableLatestMovies.collapse();
+                compositeDisposableLatestMovies.clear();
             } else {
+                getLatestMovie();
                 fragmentHomeBinding.expandableLatestMovies.expand();
             }
         } else if (v.getId() == R.id.popularText) {
@@ -300,7 +296,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.GONE);
             } else {
                 fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.VISIBLE);
-                getTopRated();
+                //getTopRated();
+                getTopRatedOnce();
                 fragmentHomeBinding.expandableTopRatedMovies.expand();
             }
         } else if (v.getId() == R.id.upComingText) {
@@ -309,7 +306,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.GONE);
             } else {
                 fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.VISIBLE);
-                getUpcoming();
+                //getUpcoming();
+                getUpComingOnce();
                 fragmentHomeBinding.expandableUpcomingMovies.expand();
             }
         }
