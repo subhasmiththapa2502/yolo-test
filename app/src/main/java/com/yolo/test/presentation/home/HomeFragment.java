@@ -1,6 +1,5 @@
 package com.yolo.test.presentation.home;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -12,8 +11,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -87,7 +84,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         compositeDisposable = new CompositeDisposable();
 
-        
+
         fragmentHomeBinding.latestMovieText.setOnClickListener(this);
         fragmentHomeBinding.popularText.setOnClickListener(this);
         fragmentHomeBinding.topRatedText.setOnClickListener(this);
@@ -282,17 +279,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void scaleView(View v, float startScale, float endScale){
-        Animation anim = new ScaleAnimation(
-                1f,1f,
-                startScale, endScale,
-                Animation.RELATIVE_TO_SELF,0f,
-                Animation.RELATIVE_TO_SELF,1f);
-        anim.setFillAfter(true);
-        anim.setDuration(1000);
-        v.startAnimation(anim);
-    }
-    @SuppressLint("NonConstantResourceId")
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.latestMovieText) {
@@ -301,19 +288,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             } else {
                 fragmentHomeBinding.expandableLatestMovies.expand();
             }
-        }else if (v.getId() == R.id.popularText){
+        } else if (v.getId() == R.id.popularText) {
             if (fragmentHomeBinding.expandablePopularMovies.getState() == ExpandableLayout.State.EXPANDED) {
                 fragmentHomeBinding.expandablePopularMovies.collapse();
             } else {
                 fragmentHomeBinding.expandablePopularMovies.expand();
             }
-        }else if (v.getId() == R.id.topRatedText){
+        } else if (v.getId() == R.id.topRatedText) {
             if (fragmentHomeBinding.expandableTopRatedMovies.getState() == ExpandableLayout.State.EXPANDED) {
                 fragmentHomeBinding.expandableTopRatedMovies.collapse();
             } else {
                 fragmentHomeBinding.expandableTopRatedMovies.expand();
             }
-        }else if (v.getId() == R.id.upComingText){
+        } else if (v.getId() == R.id.upComingText) {
             if (fragmentHomeBinding.expandableUpcomingMovies.getState() == ExpandableLayout.State.EXPANDED) {
                 fragmentHomeBinding.expandableUpcomingMovies.collapse();
             } else {
