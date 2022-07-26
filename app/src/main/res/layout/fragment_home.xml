@@ -77,8 +77,8 @@
                     android:id="@+id/LatestMovieCon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/round_bg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -205,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="30dp"
                         app:el_duration="1000"
-                        app:el_expanded="true"
+                        app:el_expanded="false"
                         app:el_parallax="0.5"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/topRatedText">
@@ -218,6 +218,15 @@
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/trendingMovieText" />
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/loadingTopRatedMovies"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="true"
+                            app:lottie_rawRes="@raw/cinema_loading" />
                     </net.cachapa.expandablelayout.ExpandableLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -254,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="30dp"
                         app:el_duration="1000"
-                        app:el_expanded="true"
+                        app:el_expanded="false"
                         app:el_parallax="0.5"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/upComingText">
@@ -267,6 +276,15 @@
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/trendingMovieText" />
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/loadingUpComingMovies"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="true"
+                            app:lottie_rawRes="@raw/cinema_loading" />
                     </net.cachapa.expandablelayout.ExpandableLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

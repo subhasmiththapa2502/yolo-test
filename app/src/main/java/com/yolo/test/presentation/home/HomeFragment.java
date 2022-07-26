@@ -185,6 +185,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull Movie popular) {
+                        fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.GONE);
                         fragmentHomeBinding.topRatedText.setVisibility(View.VISIBLE);
                         if (fragmentHomeBinding.topRatedRecycleView.getAdapter() != null) {
                             topRatedMovieAdapter = (TopRatedMovieAdapter) fragmentHomeBinding.topRatedRecycleView.getAdapter();
@@ -224,6 +225,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull Movie upComing) {
                         fragmentHomeBinding.upComingText.setVisibility(View.VISIBLE);
+                        fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.GONE);
                         if (fragmentHomeBinding.upComingRecycleView.getAdapter() != null) {
                             upComingAdopter = (UpComingAdapter) fragmentHomeBinding.upComingRecycleView.getAdapter();
                             upComingAdopter.updateUpcoming(upComing.getResults());
@@ -255,8 +257,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onAvailable(@androidx.annotation.NonNull Network network) {
                 getLatestMovie();
                 getPopular();
-                getTopRated();
-                getUpcoming();
             }
 
             @Override
@@ -297,13 +297,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else if (v.getId() == R.id.topRatedText) {
             if (fragmentHomeBinding.expandableTopRatedMovies.getState() == ExpandableLayout.State.EXPANDED) {
                 fragmentHomeBinding.expandableTopRatedMovies.collapse();
+                fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.GONE);
             } else {
+                fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.VISIBLE);
+                getTopRated();
                 fragmentHomeBinding.expandableTopRatedMovies.expand();
             }
         } else if (v.getId() == R.id.upComingText) {
             if (fragmentHomeBinding.expandableUpcomingMovies.getState() == ExpandableLayout.State.EXPANDED) {
                 fragmentHomeBinding.expandableUpcomingMovies.collapse();
+                fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.GONE);
             } else {
+                fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.VISIBLE);
+                getUpcoming();
                 fragmentHomeBinding.expandableUpcomingMovies.expand();
             }
         }
