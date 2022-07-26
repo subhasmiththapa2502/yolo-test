@@ -32,7 +32,7 @@
                 <ImageView
                     android:id="@+id/expandedImage"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:contentDescription="@string/toolbarimage"
                     android:scaleType="centerCrop"
                     android:src="@drawable/joker"
@@ -53,12 +53,12 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".HomeFragment.HomeFragment">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="150dp"
                 android:orientation="vertical">
 
 
@@ -78,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/round_bg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
