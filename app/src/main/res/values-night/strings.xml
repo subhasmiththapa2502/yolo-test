@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">YoloTest</string>
     <string name="latest_movie">Latest movies</string>
     <string name="toolbarimage">toolbarImage</string>
     <string name="popular_movies">Popular movies</string>
