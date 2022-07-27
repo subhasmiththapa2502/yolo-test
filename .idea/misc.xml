@@ -17,7 +17,7 @@
         <entry key="app/src/main/res/layout/fragment_movie.xml" value="0.14336372847011145" />
         <entry key="app/src/main/res/layout/homefragment.xml" value="0.14010416666666667" />
         <entry key="app/src/main/res/layout/lottie_anim.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/movie_item.xml" value="0.14010416666666667" />
+        <entry key="app/src/main/res/layout/movie_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/placeholder.xml" value="0.19610507246376813" />
       </map>
     </option>
