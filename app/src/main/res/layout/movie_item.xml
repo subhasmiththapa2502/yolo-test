@@ -68,40 +68,38 @@
                 android:layout_height="150dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
+                android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:src="@drawable/mcu_poster"
                 app:circularflow_defaultRadius="15dp"
                 app:circularflow_radiusInDP="15dp"
-                android:src="@drawable/mcu_poster"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.442"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:riv_corner_radius="15dp"
-                app:riv_tile_mode="repeat"
-                android:adjustViewBounds="true"
-
-
-
-                app:riv_border_width="2dip"
                 app:riv_border_color="#333333"
+                app:riv_border_width="2dip"
+
+
+                app:riv_corner_radius="15dp"
                 app:riv_mutate_background="true"
-                />
+                app:riv_tile_mode="repeat" />
 
             <TextView
                 android:id="@+id/Moviename"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:singleLine="true"
                 android:textColor="@color/text_item_color"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.473"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="Movie Name"
-                android:ellipsize="end"
-                android:singleLine="true"
-                app:layout_constraintTop_toBottomOf="@+id/trendingPoster" />
+                app:layout_constraintTop_toBottomOf="@+id/trendingPoster"
+                tools:text="Movie Name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
