@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.homeFragment) {
-                toolbar.setCollapseIcon(R.drawable.ic_baseline_star_24);
+                toolbar.setTitle(getString(R.string.app_name));
             }
 
         });
