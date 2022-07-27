@@ -30,7 +30,6 @@ import com.yolo.test.presentation.detail.DetailFragment;
 import java.util.List;
 
 
-
 public class TopRatedMovieAdapter extends RecyclerView.Adapter<TopRatedMovieAdapter.TopRatedHolder> {
     List<MovieResult> latestResults;
     LayoutInflater layoutInflater;
@@ -54,14 +53,12 @@ public class TopRatedMovieAdapter extends RecyclerView.Adapter<TopRatedMovieAdap
     @Override
     public void onBindViewHolder(@NonNull TopRatedHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.bind(latestResults.get(position));
-        holder.movieItemBinding.trendingPoster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DetailFragment bottomSheetFragment = new DetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.MOVIE_ID,latestResults.get(position).getId());
-                bottomSheetFragment.setArguments(bundle);
-                bottomSheetFragment.show(mainFragmentManager, latestResults.get(position).getId()+"");            }
+        holder.movieItemBinding.trendingPoster.setOnClickListener(view -> {
+            DetailFragment bottomSheetFragment = new DetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constants.MOVIE_ID, latestResults.get(position).getId());
+            bottomSheetFragment.setArguments(bundle);
+            bottomSheetFragment.show(mainFragmentManager, latestResults.get(position).getId() + "");
         });
     }
 

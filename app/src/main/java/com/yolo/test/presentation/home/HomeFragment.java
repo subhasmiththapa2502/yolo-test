@@ -1,6 +1,5 @@
 package com.yolo.test.presentation.home;
 
-import static com.yolo.test.common.Constants.IMAGE_URL_500;
 import static com.yolo.test.common.Constants.STATIC_COLLAPSING_TOOLBAR_IMAGE;
 
 import android.content.Context;

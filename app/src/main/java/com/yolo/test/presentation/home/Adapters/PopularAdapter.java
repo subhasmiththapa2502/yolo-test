@@ -59,18 +59,13 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularH
     {
         holder.bind(popularResult.get(position));
 
-        holder.movieItemBinding.trendingPoster.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                DetailFragment bottomSheetFragment = new DetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.MOVIE_ID,popularResult.get(position).getId());
-                bottomSheetFragment.setArguments(bundle);
-                bottomSheetFragment.show(mainFragmentManager, popularResult.get(position).getId()+"");
+        holder.movieItemBinding.trendingPoster.setOnClickListener(view -> {
+            DetailFragment bottomSheetFragment = new DetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constants.MOVIE_ID,popularResult.get(position).getId());
+            bottomSheetFragment.setArguments(bundle);
+            bottomSheetFragment.show(mainFragmentManager, popularResult.get(position).getId()+"");
 
-            }
         });
     }
 

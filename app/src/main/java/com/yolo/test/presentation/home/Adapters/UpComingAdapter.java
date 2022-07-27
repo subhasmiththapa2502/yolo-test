@@ -29,67 +29,60 @@ import com.yolo.test.presentation.detail.DetailFragment;
 
 import java.util.List;
 
-public class UpComingAdapter extends RecyclerView.Adapter<UpComingAdapter.UpComingViewHolder>
-{
+public class UpComingAdapter extends RecyclerView.Adapter<UpComingAdapter.UpComingViewHolder> {
     List<MovieResult> upComingList;
     LayoutInflater layoutInflater;
     FragmentManager mainFragmentManager;
 
-    public UpComingAdapter(List<MovieResult> upComingList, FragmentManager fragmentManager)
-    {
+    public UpComingAdapter(List<MovieResult> upComingList, FragmentManager fragmentManager) {
         this.upComingList = upComingList;
         this.mainFragmentManager = fragmentManager;
     }
 
     @NonNull
     @Override
-    public UpComingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-        if(layoutInflater == null)
-        {
+    public UpComingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (layoutInflater == null) {
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
-        MovieItemBinding movieItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.movie_item,parent,false);
+        MovieItemBinding movieItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.movie_item, parent, false);
 
         return new UpComingViewHolder(movieItemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpComingViewHolder holder, @SuppressLint("RecyclerView") int position)
-    {
+    public void onBindViewHolder(@NonNull UpComingViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.bind(upComingList.get(position));
 
         holder.movieItemBinding.trendingPoster.setOnClickListener(view -> {
             DetailFragment bottomSheetFragment = new DetailFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(Constants.MOVIE_ID,upComingList.get(position).getId());
+            bundle.putInt(Constants.MOVIE_ID, upComingList.get(position).getId());
             bottomSheetFragment.setArguments(bundle);
-            bottomSheetFragment.show(mainFragmentManager, upComingList.get(position).getId()+"");            });
+            bottomSheetFragment.show(mainFragmentManager, upComingList.get(position).getId() + "");
+        });
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return upComingList.size();
     }
-    public void updateUpcoming(List<MovieResult> upComingList)
-    {
+
+    public void updateUpcoming(List<MovieResult> upComingList) {
         upComingList.addAll(upComingList);
         notifyDataSetChanged();
     }
 
-    public class UpComingViewHolder extends RecyclerView.ViewHolder
-    {
+    public class UpComingViewHolder extends RecyclerView.ViewHolder {
         MovieItemBinding movieItemBinding;
-        public UpComingViewHolder(@NonNull MovieItemBinding movieItemBinding)
-        {
+
+        public UpComingViewHolder(@NonNull MovieItemBinding movieItemBinding) {
             super(movieItemBinding.getRoot());
             this.movieItemBinding = movieItemBinding;
         }
 
 
-        public void bind(MovieResult upComingResult)
-        {
+        public void bind(MovieResult upComingResult) {
             loadPoster(upComingResult);
             loadRate(upComingResult);
             loadName(upComingResult);
@@ -99,11 +92,10 @@ public class UpComingAdapter extends RecyclerView.Adapter<UpComingAdapter.UpComi
         }
 
 
-        private void loadPoster(MovieResult upComingResult)
-        {
+        private void loadPoster(MovieResult upComingResult) {
             movieItemBinding.lottieLoader1.setVisibility(View.VISIBLE);
             Glide.with(movieItemBinding.getRoot().getContext())
-                    .load(IMAGE_URL_500+ upComingResult.getPosterPath())
+                    .load(IMAGE_URL_500 + upComingResult.getPosterPath())
                     .addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -120,18 +112,15 @@ public class UpComingAdapter extends RecyclerView.Adapter<UpComingAdapter.UpComi
                     .into(movieItemBinding.trendingPoster);
 
 
-
-        }
-        private void loadRate(MovieResult upComingResult)
-        {
-          //  movieItemBinding.trendingRateButton.setText(String.format("%.1f" ,upComingResult.getVoteAverage()));
         }
 
-        private void loadName(MovieResult upComingResult)
-        {
+        private void loadRate(MovieResult upComingResult) {
+            //  movieItemBinding.trendingRateButton.setText(String.format("%.1f" ,upComingResult.getVoteAverage()));
+        }
+
+        private void loadName(MovieResult upComingResult) {
             movieItemBinding.Moviename.setText(upComingResult.getTitle());
         }
-
 
 
     }

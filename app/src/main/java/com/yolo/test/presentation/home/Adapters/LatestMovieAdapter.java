@@ -53,16 +53,13 @@ public class LatestMovieAdapter extends RecyclerView.Adapter<LatestMovieAdapter.
     @Override
     public void onBindViewHolder(@NonNull LatestHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.bind(latestResults.get(position));
-        holder.movieItemBinding.trendingPoster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.movieItemBinding.trendingPoster.setOnClickListener(view -> {
 
-                DetailFragment bottomSheetFragment = new DetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.MOVIE_ID,latestResults.get(position).getId());
-                bottomSheetFragment.setArguments(bundle);
-                bottomSheetFragment.show(mainFragmentManager, latestResults.get(position).getId()+"");
-            }
+            DetailFragment bottomSheetFragment = new DetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constants.MOVIE_ID,latestResults.get(position).getId());
+            bottomSheetFragment.setArguments(bundle);
+            bottomSheetFragment.show(mainFragmentManager, latestResults.get(position).getId()+"");
         });
     }
 
@@ -78,7 +75,7 @@ public class LatestMovieAdapter extends RecyclerView.Adapter<LatestMovieAdapter.
     }
 
 
-    public class LatestHolder extends RecyclerView.ViewHolder {
+    public static class LatestHolder extends RecyclerView.ViewHolder {
         MovieItemBinding movieItemBinding;
 
         public LatestHolder(@NonNull MovieItemBinding movieItemBinding) {

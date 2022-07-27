@@ -6,7 +6,6 @@ import static com.yolo.test.common.Constants.IMAGE_URL_780;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.yolo.test.Models.Credits.Cast;
-import com.yolo.test.Models.Credits.Credits;
-import com.yolo.test.Models.Credits.Crew;
 import com.yolo.test.Models.MovieResult;
 import com.yolo.test.Models.Trailer.Trailer;
 import com.yolo.test.Models.Trailer.TrailerResult;
@@ -33,8 +29,6 @@ import com.yolo.test.R;
 import com.yolo.test.ViewModel.AppViewModel;
 import com.yolo.test.common.Constants;
 import com.yolo.test.databinding.FragmentDetailBinding;
-
-import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
@@ -214,9 +208,6 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
     public void onClick(View v) {
         if (v.getId() == R.id.playTrailer){
             getMovieTrailer(movieId);
-            /*Intent intent = new Intent(requireActivity(), YouTubeActivity.class);
-            intent.putExtra(Constants.MOVIE_ID, movieId);
-            startActivity(intent);*/
         }
     }
 }
