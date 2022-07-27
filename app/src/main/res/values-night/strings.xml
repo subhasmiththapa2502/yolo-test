@@ -9,4 +9,5 @@
     <string name="play_trailer">Play Trailer</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="no_internet">No Connection Available</string>
+    <string name="error_loading_image">Error while loading image</string>
 </resources>
