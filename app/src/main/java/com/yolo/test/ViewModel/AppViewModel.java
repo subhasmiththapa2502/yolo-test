@@ -4,7 +4,10 @@ import android.app.Application;
 
 import androidx.lifecycle.ViewModel;
 
+import com.yolo.test.Models.Credits.Credits;
 import com.yolo.test.Models.Movie;
+import com.yolo.test.Models.MovieResult;
+import com.yolo.test.Models.Trailer.Trailer;
 import com.yolo.test.data.repository.AppRepository;
 
 import java.util.concurrent.Future;
@@ -63,10 +66,23 @@ public class AppViewModel extends ViewModel
     {
         return appRepository.getUpComingOnce();
     }
+    public Call<MovieResult> getMovieDetails(int id)
+    {
+        return appRepository.getMovieDetails(id);
+    }
+
+    public Call<Credits> makeCreditsCall(int id)
+    {
+        return appRepository.getMovieCredits(id);
+    }
 
     public Call<Movie> makeLatestMovieCall()
     {
         return appRepository.getLatestMovieOnce();
+    }
+    public Call<Trailer> makeMovieTrailerCall(int id)
+    {
+        return appRepository.getMovieTrailer(id);
     }
 
 

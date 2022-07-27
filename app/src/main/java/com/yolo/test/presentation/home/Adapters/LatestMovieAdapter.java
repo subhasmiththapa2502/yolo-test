@@ -1,4 +1,4 @@
-package com.yolo.test.presentation.home.Adapters;
+package com.yolo.test.presentation.home.adapters;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.yolo.test.Models.MovieResult;
 import com.yolo.test.R;
+import com.yolo.test.common.Constants;
 import com.yolo.test.databinding.MovieItemBinding;
+import com.yolo.test.presentation.detail.DetailFragment;
 
 import java.util.List;
 
@@ -22,9 +25,11 @@ import java.util.List;
 public class LatestMovieAdapter extends RecyclerView.Adapter<LatestMovieAdapter.LatestHolder> {
     List<MovieResult> latestResults;
     LayoutInflater layoutInflater;
+    FragmentManager mainFragmentManager;
 
-    public LatestMovieAdapter(List<MovieResult> latestResults) {
+    public LatestMovieAdapter(List<MovieResult> latestResults,  FragmentManager fragmentManager) {
         this.latestResults = latestResults;
+        this.mainFragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -43,10 +48,12 @@ public class LatestMovieAdapter extends RecyclerView.Adapter<LatestMovieAdapter.
         holder.movieItemBinding.trendingPoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("model", latestResults.get(position));
 
-                //Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_detailFragment,bundle);
+                DetailFragment bottomSheetFragment = new DetailFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constants.MOVIE_ID,latestResults.get(position).getId());
+                bottomSheetFragment.setArguments(bundle);
+                bottomSheetFragment.show(mainFragmentManager, latestResults.get(position).getId()+"");
             }
         });
     }

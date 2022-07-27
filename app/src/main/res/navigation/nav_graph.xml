@@ -10,5 +10,9 @@
         android:id="@+id/homeFragment"
         android:name="com.yolo.test.presentation.home.HomeFragment" >
     </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.yolo.test.presentation.detail.DetailFragment" >
+    </fragment>
 
 </navigation>

@@ -17,6 +17,9 @@ public class MovieResult implements Parcelable
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+    @SerializedName("tagline")
+    @Expose
+    private String tagline;
     @SerializedName("title")
     @Expose
     private String title;
@@ -72,6 +75,7 @@ public class MovieResult implements Parcelable
     protected MovieResult(Parcel in) {
         overview = in.readString();
         releaseDate = in.readString();
+        tagline = in.readString();
         title = in.readString();
         byte tmpAdult = in.readByte();
         adult = tmpAdult == 0 ? null : tmpAdult == 1;
@@ -134,6 +138,14 @@ public class MovieResult implements Parcelable
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
     }
 
     public String getTitle() {
@@ -282,6 +294,7 @@ public class MovieResult implements Parcelable
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(overview);
         parcel.writeString(releaseDate);
+        parcel.writeString(tagline);
         parcel.writeString(title);
         parcel.writeByte((byte) (adult == null ? 0 : adult ? 1 : 2));
         parcel.writeString(backdropPath);

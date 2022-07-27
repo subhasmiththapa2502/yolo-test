@@ -27,10 +27,10 @@ import com.yolo.test.Models.Movie;
 import com.yolo.test.R;
 import com.yolo.test.ViewModel.AppViewModel;
 import com.yolo.test.databinding.FragmentHomeBinding;
-import com.yolo.test.presentation.home.Adapters.LatestMovieAdapter;
-import com.yolo.test.presentation.home.Adapters.PopularAdapter;
-import com.yolo.test.presentation.home.Adapters.TopRatedMovieAdapter;
-import com.yolo.test.presentation.home.Adapters.UpComingAdapter;
+import com.yolo.test.presentation.home.adapters.LatestMovieAdapter;
+import com.yolo.test.presentation.home.adapters.PopularAdapter;
+import com.yolo.test.presentation.home.adapters.TopRatedMovieAdapter;
+import com.yolo.test.presentation.home.adapters.UpComingAdapter;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return fragmentHomeBinding.getRoot();
     }
 
-    private void getLatestMovieOnce(){
+    private void getLatestMovieOnce() {
         appViewModel.makeLatestMovieCall().enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> trending) {
@@ -112,18 +112,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     latestMovieAdapter.updateTrending(trending.body().getResults());
                 } else {
                     assert trending.body() != null;
-                    latestMovieAdapter = new LatestMovieAdapter(trending.body().getResults());
+                    latestMovieAdapter = new LatestMovieAdapter(trending.body().getResults(), requireActivity().getSupportFragmentManager());
                     fragmentHomeBinding.latestMovieRecycleView.setAdapter(latestMovieAdapter);
 
                 }
             }
 
             @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
+            public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
 
             }
         });
     }
+
     private void getLatestMovie() {
 
         Observable.interval(30, TimeUnit.SECONDS)
@@ -146,9 +147,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             latestMovieAdapter.updateTrending(trending.getResults());
 
                         } else {
-                            latestMovieAdapter = new LatestMovieAdapter(trending.getResults());
+                            latestMovieAdapter = new LatestMovieAdapter(trending.getResults(), requireActivity().getSupportFragmentManager());
                             fragmentHomeBinding.latestMovieRecycleView.setAdapter(latestMovieAdapter);
-
                         }
                     }
 
@@ -176,7 +176,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                 } else {
                     assert popular.body() != null;
-                    popularAdapter = new PopularAdapter(popular.body().getResults());
+                    popularAdapter = new PopularAdapter(popular.body().getResults(), requireActivity().getSupportFragmentManager());
                     fragmentHomeBinding.popularRecycleView.setAdapter(popularAdapter);
 
                 }
@@ -202,7 +202,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     topRatedMovieAdapter.updateTopRated(popular.body().getResults());
                 } else {
                     assert popular.body() != null;
-                    topRatedMovieAdapter = new TopRatedMovieAdapter(popular.body().getResults());
+                    topRatedMovieAdapter = new TopRatedMovieAdapter(popular.body().getResults(), requireActivity().getSupportFragmentManager());
                     fragmentHomeBinding.topRatedRecycleView.setAdapter(topRatedMovieAdapter);
 
                 }
@@ -228,7 +228,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     upComingAdopter.updateUpcoming(upComing.body().getResults());
                 } else {
                     assert upComing.body() != null;
-                    upComingAdopter = new UpComingAdapter(upComing.body().getResults());
+                    upComingAdopter = new UpComingAdapter(upComing.body().getResults(), requireActivity().getSupportFragmentManager());
                     fragmentHomeBinding.upComingRecycleView.setAdapter(upComingAdopter);
 
                 }
@@ -240,7 +240,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
 
 
     private void checkConnection() {

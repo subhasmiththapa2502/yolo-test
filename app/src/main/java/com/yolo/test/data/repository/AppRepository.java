@@ -1,6 +1,9 @@
 package com.yolo.test.data.repository;
 
+import com.yolo.test.Models.Credits.Credits;
 import com.yolo.test.Models.Movie;
+import com.yolo.test.Models.MovieResult;
+import com.yolo.test.Models.Trailer.Trailer;
 import com.yolo.test.data.remote.ApiClient;
 
 import java.util.concurrent.Callable;
@@ -176,6 +179,11 @@ public class AppRepository {
 
     }
 
+    public Call<Credits> getMovieCredits(int id)
+    {
+        return   apiClient.getMovieCredits(id);
+    }
+
     public Call<Movie> getPopularOnce()
     {
         return apiClient.getPopularOnce();
@@ -189,9 +197,17 @@ public class AppRepository {
     {
         return apiClient.getUpComingOnce();
     }
+    public Call<MovieResult> getMovieDetails(int id)
+    {
+        return apiClient.getMovieDetails(id);
+    }
     public Call<Movie> getLatestMovieOnce()
     {
         return apiClient.getLatestMovieOnce();
+    }
+   public Call<Trailer> getMovieTrailer(int id)
+    {
+        return apiClient.getMovieTrailer(id);
     }
 
 }

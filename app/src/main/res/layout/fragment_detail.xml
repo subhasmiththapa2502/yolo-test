@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/round_bg"
+        tools:context=".presentation.detail.DetailFragment">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            app:cardCornerRadius="15dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/landscape"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:layout_margin="5dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/round_bg"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/mcu_poster"
+                        app:circularflow_defaultRadius="15dp"
+                        app:circularflow_radiusInDP="15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.442"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:riv_border_color="#333333"
+                        app:riv_border_width="2dip"
+                        app:riv_corner_radius="15dp"
+                        app:riv_mutate_background="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:layout_margin="5dp"
+                        android:background="#66000000" />
+                </FrameLayout>
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/portrait"
+                    android:layout_width="100dp"
+                    android:layout_height="200dp"
+                    android:layout_margin="20dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/round_bg"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/joker"
+                    app:circularflow_defaultRadius="15dp"
+                    app:circularflow_radiusInDP="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.442"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:riv_border_color="#333333"
+                    app:riv_border_width="2dip"
+                    app:riv_corner_radius="15dp"
+                    app:riv_mutate_background="true" />
+
+                <TextView
+                    android:id="@+id/movie_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/portrait"
+                    app:layout_constraintTop_toTopOf="@+id/portrait"
+                    tools:text="Movie Name" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/portrait"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_name"
+                    tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
+
+                <TextView
+                    android:id="@+id/playTrailer"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/play_trailer"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_baseline_play_arrow_24"
+                    app:layout_constraintStart_toEndOf="@+id/portrait"
+                    app:layout_constraintTop_toBottomOf="@+id/description" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/directorList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/portrait"
+                    app:layout_constraintTop_toBottomOf="@+id/description" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+    </FrameLayout>
+</layout>

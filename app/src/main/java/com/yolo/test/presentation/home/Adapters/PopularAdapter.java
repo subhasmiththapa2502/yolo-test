@@ -1,4 +1,4 @@
-package com.yolo.test.presentation.home.Adapters;
+package com.yolo.test.presentation.home.adapters;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
 import com.yolo.test.Models.MovieResult;
 import com.yolo.test.R;
+import com.yolo.test.common.Constants;
 import com.yolo.test.databinding.MovieItemBinding;
+import com.yolo.test.presentation.detail.DetailFragment;
 
 import java.util.List;
 
@@ -22,10 +25,12 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularH
 {
     List<MovieResult> popularResult;
     LayoutInflater layoutInflater;
+    FragmentManager mainFragmentManager;
 
-    public PopularAdapter(List<MovieResult> popularResult)
+    public PopularAdapter(List<MovieResult> popularResult, FragmentManager fragmentManager)
     {
         this.popularResult = popularResult;
+        this.mainFragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -51,9 +56,12 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularH
             @Override
             public void onClick(View view)
             {
+                DetailFragment bottomSheetFragment = new DetailFragment();
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("model",popularResult.get(position));
-                //Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_detailFragment,bundle);
+                bundle.putInt(Constants.MOVIE_ID,popularResult.get(position).getId());
+                bottomSheetFragment.setArguments(bundle);
+                bottomSheetFragment.show(mainFragmentManager, popularResult.get(position).getId()+"");
+
             }
         });
     }

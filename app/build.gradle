@@ -97,5 +97,10 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottie_version"
 
     //----------------------------------------------------------------------------------------------
+    //YoutubePlayer
+    def youTubePlayer_version = "11.0.1"
+    implementation "com.pierfrancescosoffritti.androidyoutubeplayer:core:$youTubePlayer_version"
+
+    //----------------------------------------------------------------------------------------------
 
 }
