@@ -4,6 +4,7 @@ import static com.yolo.test.common.Constants.IMAGE_URL_600_900;
 import static com.yolo.test.common.Constants.IMAGE_URL_780;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.yolo.test.Models.Credits.Cast;
 import com.yolo.test.Models.Credits.Credits;
@@ -133,19 +138,57 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
         intent.putExtra(Constants.YOUTUBE_ID, youTubeId);
         startActivity(intent);
     }
+
+    private void loadPortraitImage(String posterPath){
+        fragmentDetailBinding.lottieLoader2.setVisibility(View.VISIBLE);
+        Glide.with(fragmentDetailBinding.getRoot().getContext())
+                .load(IMAGE_URL_600_900 +posterPath)
+                .addListener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        fragmentDetailBinding.lottieLoader2.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        fragmentDetailBinding.lottieLoader2.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(fragmentDetailBinding.portrait);
+
+    }
+
+    private void loadLandScapeImage(String backdropPath){
+        fragmentDetailBinding.lottieLoader1.setVisibility(View.VISIBLE);
+        Glide.with(fragmentDetailBinding.getRoot().getContext())
+                .load(IMAGE_URL_780+  backdropPath)
+                .addListener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        fragmentDetailBinding.lottieLoader1.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        fragmentDetailBinding.lottieLoader1.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(fragmentDetailBinding.landscape);
+    }
+
     private void setUpDetails(MovieResult moviesResult) {
 
 
         if(moviesResult.getPosterPath() !=null || moviesResult.getBackdropPath() !=null)
         {
 
-            Glide.with(fragmentDetailBinding.getRoot().getContext())
-                    .load(IMAGE_URL_600_900 +moviesResult.getPosterPath())
-                    .into(fragmentDetailBinding.portrait);
+            loadPortraitImage(moviesResult.getPosterPath());
+            loadLandScapeImage(moviesResult.getBackdropPath());
 
-            Glide.with(fragmentDetailBinding.getRoot().getContext())
-                    .load(IMAGE_URL_780+  moviesResult.getBackdropPath())
-                    .into(fragmentDetailBinding.landscape);
         }else
         {
             fragmentDetailBinding.landscape.setImageResource(R.drawable.joker);

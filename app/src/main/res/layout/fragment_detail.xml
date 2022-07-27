@@ -10,16 +10,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/round_bg"
         tools:context=".presentation.detail.DetailFragment">
 
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:padding="5dp"
-            app:cardCornerRadius="15dp">
+            app:cardCornerRadius="30dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint"
@@ -40,7 +39,6 @@
                         android:adjustViewBounds="true"
                         android:background="@drawable/round_bg"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/mcu_poster"
                         app:circularflow_defaultRadius="15dp"
                         app:circularflow_radiusInDP="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +46,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:riv_border_color="#333333"
-                        app:riv_border_width="2dip"
+                        app:riv_border_width="1dip"
                         app:riv_corner_radius="15dp"
                         app:riv_mutate_background="true" />
 
@@ -57,26 +55,53 @@
                         android:layout_height="400dp"
                         android:layout_margin="5dp"
                         android:background="#66000000" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieLoader1"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/image_loading" />
+
                 </FrameLayout>
 
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/portrait"
+                <FrameLayout
+                    android:id="@+id/frameLayout"
                     android:layout_width="100dp"
                     android:layout_height="200dp"
                     android:layout_margin="20dp"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/round_bg"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/joker"
-                    app:circularflow_defaultRadius="15dp"
-                    app:circularflow_radiusInDP="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0.442"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:riv_border_color="#333333"
-                    app:riv_border_width="2dip"
-                    app:riv_corner_radius="15dp"
-                    app:riv_mutate_background="true" />
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/portrait"
+                        android:layout_width="100dp"
+                        android:layout_height="200dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/round_bg"
+                        android:scaleType="centerCrop"
+                        app:circularflow_defaultRadius="15dp"
+                        app:circularflow_radiusInDP="15dp"
+                        app:riv_border_color="#FFFFFF"
+                        app:riv_border_width="2dip"
+                        app:riv_corner_radius="15dp"
+                        app:riv_mutate_background="true" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieLoader2"
+                        android:layout_width="100dp"
+                        android:layout_height="200dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/image_loading" />
+
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/movie_name"
@@ -88,8 +113,8 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/portrait"
-                    app:layout_constraintTop_toTopOf="@+id/portrait"
+                    app:layout_constraintStart_toEndOf="@+id/frameLayout"
+                    app:layout_constraintTop_toTopOf="@+id/frameLayout"
                     tools:text="Movie Name" />
 
                 <TextView
@@ -102,7 +127,7 @@
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/portrait"
+                    app:layout_constraintStart_toEndOf="@+id/frameLayout"
                     app:layout_constraintTop_toBottomOf="@+id/movie_name"
                     tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
 
@@ -118,16 +143,9 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_baseline_play_arrow_24"
-                    app:layout_constraintStart_toEndOf="@+id/portrait"
+                    app:layout_constraintStart_toEndOf="@+id/frameLayout"
                     app:layout_constraintTop_toBottomOf="@+id/description" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/directorList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/portrait"
-                    app:layout_constraintTop_toBottomOf="@+id/description" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
