@@ -7,4 +7,6 @@
     <string name="upcoming_movies">Upcoming movies</string>
     <string name="trending_movie">Trending movies</string>
     <string name="play_trailer">Play Trailer</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="no_internet">No Connection Available</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.yolo.test.presentation.home.adapters;
 
+import static com.yolo.test.common.Constants.IMAGE_URL_500;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -91,11 +93,10 @@ public class LatestMovieAdapter extends RecyclerView.Adapter<LatestMovieAdapter.
 
         private void loadPoster(MovieResult trendingResult) {
             Glide.with(movieItemBinding.getRoot().getContext())
-                    .load("https://image.tmdb.org/t/p/w500" + trendingResult.getPosterPath())
+                    .load(IMAGE_URL_500 + trendingResult.getPosterPath())
                     //.thumbnail(Glide.with(movieItemBinding.getRoot().getContext()).load(R.drawable.loading))
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(movieItemBinding.trendingPoster);
-
 
         }
 

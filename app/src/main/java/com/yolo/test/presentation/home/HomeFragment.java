@@ -1,12 +1,15 @@
 package com.yolo.test.presentation.home;
 
+import static com.yolo.test.common.Constants.IMAGE_URL_500;
+import static com.yolo.test.common.Constants.STATIC_COLLAPSING_TOOLBAR_IMAGE;
+
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +17,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.thecode.aestheticdialogs.AestheticDialog;
 import com.thecode.aestheticdialogs.DialogAnimation;
 import com.thecode.aestheticdialogs.DialogStyle;
@@ -78,6 +89,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setUpToolBar(view);
     }
 
     @Override
@@ -96,30 +108,71 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         fragmentHomeBinding.upComingText.setOnClickListener(this);
 
         checkConnection();
-
-
+        showImage();
+        fragmentHomeBinding.lottieLoader.setVisibility(View.VISIBLE);
         return fragmentHomeBinding.getRoot();
     }
+
+    private void showImage() {
+        Glide.with(requireActivity())
+                .load(STATIC_COLLAPSING_TOOLBAR_IMAGE)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(fragmentHomeBinding.expandedImage);
+    }
+
+    private void hideLoader() {
+        fragmentHomeBinding.lottieLoader.setVisibility(View.GONE);
+    }
+
+    private void setUpToolBar(View view) {
+        NavController navController = Navigation.findNavController(view);
+
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.homeFragment)
+                .build();
+
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.homeFragment) {
+                toolbar.setCollapseIcon(R.drawable.ic_baseline_star_24);
+            }
+
+        });
+
+
+    }
+
 
     private void getLatestMovieOnce() {
         appViewModel.makeLatestMovieCall().enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> trending) {
-                fragmentHomeBinding.latestMovieText.setVisibility(View.VISIBLE);
-                if (fragmentHomeBinding.latestMovieRecycleView.getAdapter() != null) {
-                    latestMovieAdapter = (LatestMovieAdapter) fragmentHomeBinding.latestMovieRecycleView.getAdapter();
-                    assert trending.body() != null;
-                    latestMovieAdapter.updateTrending(trending.body().getResults());
+                if (trending.isSuccessful()) {
+                    hideLoader();
+                    fragmentHomeBinding.latestMovieText.setVisibility(View.VISIBLE);
+                    if (fragmentHomeBinding.latestMovieRecycleView.getAdapter() != null) {
+                        latestMovieAdapter = (LatestMovieAdapter) fragmentHomeBinding.latestMovieRecycleView.getAdapter();
+                        assert trending.body() != null;
+                        latestMovieAdapter.updateTrending(trending.body().getResults());
+                    } else {
+                        assert trending.body() != null;
+                        latestMovieAdapter = new LatestMovieAdapter(trending.body().getResults(), requireActivity().getSupportFragmentManager());
+                        fragmentHomeBinding.latestMovieRecycleView.setAdapter(latestMovieAdapter);
+                    }
                 } else {
-                    assert trending.body() != null;
-                    latestMovieAdapter = new LatestMovieAdapter(trending.body().getResults(), requireActivity().getSupportFragmentManager());
-                    fragmentHomeBinding.latestMovieRecycleView.setAdapter(latestMovieAdapter);
+                    hideLoader();
+                    showSnackBar(getString(R.string.something_went_wrong));
 
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
+                hideLoader();
+                showSnackBar(t.getMessage());
 
             }
         });
@@ -134,7 +187,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 .subscribe(new Observer<Movie>() {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        Log.d("######", "onSubscribe");
                         compositeDisposableLatestMovies.add(d);
                     }
 
@@ -154,37 +206,57 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Log.d("######", "onError");
+                        showSnackBar(e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d("######", "ERROR");
                     }
                 });
+    }
+
+    private void showSnackBar(String message) {
+
+        Snackbar snackbar = Snackbar
+                .make(fragmentHomeBinding.coordinator, message, Snackbar.LENGTH_LONG)
+                .setAction("OK", view -> {
+                });
+
+        View sbView = snackbar.getView();
+        sbView.setBackgroundColor(Color.BLACK);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setTextColor(Color.WHITE);
+        snackbar.show();
     }
 
     private void getPopularOnce() {
         appViewModel.makePopularCall().enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> popular) {
-                fragmentHomeBinding.popularText.setVisibility(View.VISIBLE);
-                if (fragmentHomeBinding.popularRecycleView.getAdapter() != null) {
-                    popularAdapter = (PopularAdapter) fragmentHomeBinding.popularRecycleView.getAdapter();
-                    assert popular.body() != null;
-                    popularAdapter.updatePopular(popular.body().getResults());
+                if (popular.isSuccessful()) {
+                    hideLoader();
+                    fragmentHomeBinding.popularText.setVisibility(View.VISIBLE);
+                    if (fragmentHomeBinding.popularRecycleView.getAdapter() != null) {
+                        popularAdapter = (PopularAdapter) fragmentHomeBinding.popularRecycleView.getAdapter();
+                        assert popular.body() != null;
+                        popularAdapter.updatePopular(popular.body().getResults());
 
+                    } else {
+                        assert popular.body() != null;
+                        popularAdapter = new PopularAdapter(popular.body().getResults(), requireActivity().getSupportFragmentManager());
+                        fragmentHomeBinding.popularRecycleView.setAdapter(popularAdapter);
+
+                    }
                 } else {
-                    assert popular.body() != null;
-                    popularAdapter = new PopularAdapter(popular.body().getResults(), requireActivity().getSupportFragmentManager());
-                    fragmentHomeBinding.popularRecycleView.setAdapter(popularAdapter);
-
+                    hideLoader();
+                    showSnackBar(getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
-
+                showSnackBar(t.getMessage());
+                hideLoader();
             }
         });
     }
@@ -194,23 +266,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         appViewModel.makeTopRatedCall().enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> popular) {
-                fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.GONE);
-                fragmentHomeBinding.topRatedText.setVisibility(View.VISIBLE);
-                if (fragmentHomeBinding.topRatedRecycleView.getAdapter() != null) {
-                    topRatedMovieAdapter = (TopRatedMovieAdapter) fragmentHomeBinding.topRatedRecycleView.getAdapter();
-                    assert popular.body() != null;
-                    topRatedMovieAdapter.updateTopRated(popular.body().getResults());
-                } else {
-                    assert popular.body() != null;
-                    topRatedMovieAdapter = new TopRatedMovieAdapter(popular.body().getResults(), requireActivity().getSupportFragmentManager());
-                    fragmentHomeBinding.topRatedRecycleView.setAdapter(topRatedMovieAdapter);
+                if (popular.isSuccessful()) {
+                    hideLoader();
+                    fragmentHomeBinding.loadingTopRatedMovies.setVisibility(View.GONE);
+                    fragmentHomeBinding.topRatedText.setVisibility(View.VISIBLE);
+                    if (fragmentHomeBinding.topRatedRecycleView.getAdapter() != null) {
+                        topRatedMovieAdapter = (TopRatedMovieAdapter) fragmentHomeBinding.topRatedRecycleView.getAdapter();
+                        assert popular.body() != null;
+                        topRatedMovieAdapter.updateTopRated(popular.body().getResults());
+                    } else {
+                        assert popular.body() != null;
+                        topRatedMovieAdapter = new TopRatedMovieAdapter(popular.body().getResults(), requireActivity().getSupportFragmentManager());
+                        fragmentHomeBinding.topRatedRecycleView.setAdapter(topRatedMovieAdapter);
 
+                    }
+                } else {
+                    hideLoader();
+                    showSnackBar(getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
-
+                hideLoader();
+                showSnackBar(getString(R.string.something_went_wrong));
             }
         });
     }
@@ -220,23 +299,29 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         appViewModel.makeUpComingCall().enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(@NonNull Call<Movie> call, @NonNull Response<Movie> upComing) {
-                fragmentHomeBinding.upComingText.setVisibility(View.VISIBLE);
-                fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.GONE);
-                if (fragmentHomeBinding.upComingRecycleView.getAdapter() != null) {
-                    upComingAdopter = (UpComingAdapter) fragmentHomeBinding.upComingRecycleView.getAdapter();
-                    assert upComing.body() != null;
-                    upComingAdopter.updateUpcoming(upComing.body().getResults());
+                if (upComing.isSuccessful()) {
+                    hideLoader();
+                    fragmentHomeBinding.upComingText.setVisibility(View.VISIBLE);
+                    fragmentHomeBinding.loadingUpComingMovies.setVisibility(View.GONE);
+                    if (fragmentHomeBinding.upComingRecycleView.getAdapter() != null) {
+                        upComingAdopter = (UpComingAdapter) fragmentHomeBinding.upComingRecycleView.getAdapter();
+                        assert upComing.body() != null;
+                        upComingAdopter.updateUpcoming(upComing.body().getResults());
+                    } else {
+                        assert upComing.body() != null;
+                        upComingAdopter = new UpComingAdapter(upComing.body().getResults(), requireActivity().getSupportFragmentManager());
+                        fragmentHomeBinding.upComingRecycleView.setAdapter(upComingAdopter);
+                    }
                 } else {
-                    assert upComing.body() != null;
-                    upComingAdopter = new UpComingAdapter(upComing.body().getResults(), requireActivity().getSupportFragmentManager());
-                    fragmentHomeBinding.upComingRecycleView.setAdapter(upComingAdopter);
-
+                    hideLoader();
+                    showSnackBar(getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
-
+                hideLoader();
+                showSnackBar(t.getMessage());
             }
         });
     }
@@ -254,6 +339,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onLost(@androidx.annotation.NonNull Network network) {
+                hideLoader();
+                showSnackBar(getString(R.string.no_internet));
                 aestheticDialog = new AestheticDialog.Builder(requireActivity(), DialogStyle.CONNECTIFY, DialogType.ERROR)
                         .setTitle("No Available Connection")
                         .setMessage("internet connection has been interrupted")

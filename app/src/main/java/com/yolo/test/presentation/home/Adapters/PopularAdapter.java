@@ -1,5 +1,7 @@
 package com.yolo.test.presentation.home.adapters;
 
+import static com.yolo.test.common.Constants.IMAGE_URL_500;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -103,7 +105,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularH
         private void loadPoster(MovieResult popularResult)
         {
             Glide.with(movieItemBinding.getRoot().getContext())
-                    .load("https://image.tmdb.org/t/p/w500"+ popularResult.getPosterPath())
+                    .load(IMAGE_URL_500+ popularResult.getPosterPath())
                     //.thumbnail(Glide.with(movieItemBinding.getRoot().getContext()).load(R.drawable.loading))
                     .into(movieItemBinding.trendingPoster);
 

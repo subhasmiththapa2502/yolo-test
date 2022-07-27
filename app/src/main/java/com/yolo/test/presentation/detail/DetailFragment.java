@@ -1,12 +1,14 @@
 package com.yolo.test.presentation.detail;
 
+import static com.yolo.test.common.Constants.IMAGE_URL_600_900;
+import static com.yolo.test.common.Constants.IMAGE_URL_780;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +28,6 @@ import com.yolo.test.R;
 import com.yolo.test.ViewModel.AppViewModel;
 import com.yolo.test.common.Constants;
 import com.yolo.test.databinding.FragmentDetailBinding;
-import com.yolo.test.databinding.FragmentHomeBinding;
 
 import java.util.List;
 
@@ -43,9 +44,6 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
 
 
     FragmentDetailBinding fragmentDetailBinding;
-    List<Cast> castList;
-    List<Crew> crewList;
-    List<MovieResult> recommendedMovie;
     AppViewModel appViewModel;
     int movieId;
     String youTubeId;
@@ -79,52 +77,13 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
         return fragmentDetailBinding.getRoot();
     }
 
-    private void setUpMovieCreditsDetail(int id)
-    {
-
-        appViewModel.makeCreditsCall(id).enqueue(new Callback<Credits>()
-        {
-            @Override
-            public void onResponse(Call<Credits> call, Response<Credits> response)
-            {
-                castList = response.body().getCast();
-                crewList = response.body().getCrew();
-
-
-/*                if(fragmentDetailBinding.castRecyclerView.getAdapter() != null)
-                {
-                    creditsAdopter = (CreditsAdopter) fragmentDetailBinding.castRecyclerView.getAdapter();
-                }else
-                {
-                    creditsAdopter = new CreditsAdopter(castList);
-                    fragmentDetailBinding.castRecyclerView.setAdapter(creditsAdopter);
-                }
-                for (int i = 0; i < crewList.size(); i++)
-                {
-                    if (crewList.get(i).getJob().equals("Director"))
-                    {
-                        fragmentDetailBinding.directerName.setText(crewList.get(i).getName());
-                    }
-                }*/
-            }
-
-            @Override
-            public void onFailure(Call<Credits> call, Throwable t)
-            {
-
-            }
-        });
-
-
-
-
-    }
 
     private void getMovieDetails(int id) {
         appViewModel.getMovieDetails(id).enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(@NonNull Call<MovieResult> call, @NonNull Response<MovieResult> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     movieId = response.body().getId();
                     setUpDetails(response.body());
                 }
@@ -140,9 +99,10 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
     private void getMovieTrailer(int id){
         appViewModel.makeMovieTrailerCall(id).enqueue(new Callback<Trailer>() {
             @Override
-            public void onResponse(Call<Trailer> call, Response<Trailer> response) {
+            public void onResponse(@NonNull Call<Trailer> call, @NonNull Response<Trailer> response) {
                 boolean isTrailerPresent = false;
                 if (response.isSuccessful()){
+                    assert response.body() != null;
                     for (TrailerResult trailerResult:
                          response.body().getTrailerResults()) {
                         if (trailerResult.getType().equalsIgnoreCase(Constants.TRAILER)){
@@ -162,7 +122,7 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
             }
 
             @Override
-            public void onFailure(Call<Trailer> call, Throwable t) {
+            public void onFailure(@NonNull Call<Trailer> call, @NonNull Throwable t) {
 
             }
         });
@@ -180,13 +140,11 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
         {
 
             Glide.with(fragmentDetailBinding.getRoot().getContext())
-                    .load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" +moviesResult.getPosterPath())
+                    .load(IMAGE_URL_600_900 +moviesResult.getPosterPath())
                     .into(fragmentDetailBinding.portrait);
 
-            Log.d("######", "POSTER "+ "https://image.tmdb.org/t/p/w600_and_h900_bestv2"+moviesResult.getPosterPath());
-            Log.d("######", "BACK DROP "+ "https://image.tmdb.org/t/p/w780"+moviesResult.getBackdropPath());
             Glide.with(fragmentDetailBinding.getRoot().getContext())
-                    .load("https://image.tmdb.org/t/p/w780" +  moviesResult.getBackdropPath())
+                    .load(IMAGE_URL_780+  moviesResult.getBackdropPath())
                     .into(fragmentDetailBinding.landscape);
         }else
         {

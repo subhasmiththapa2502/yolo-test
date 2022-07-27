@@ -1,5 +1,7 @@
 package com.yolo.test.presentation.home.adapters;
 
+import static com.yolo.test.common.Constants.IMAGE_URL_500;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -100,7 +102,7 @@ public class UpComingAdapter extends RecyclerView.Adapter<UpComingAdapter.UpComi
         private void loadPoster(MovieResult upComingResult)
         {
             Glide.with(movieItemBinding.getRoot().getContext())
-                    .load("https://image.tmdb.org/t/p/w500"+ upComingResult.getPosterPath())
+                    .load(IMAGE_URL_500+ upComingResult.getPosterPath())
                     //.thumbnail(Glide.with(movieItemBinding.getRoot().getContext()).load(R.drawable.loading))
                     .into(movieItemBinding.trendingPoster);
 
