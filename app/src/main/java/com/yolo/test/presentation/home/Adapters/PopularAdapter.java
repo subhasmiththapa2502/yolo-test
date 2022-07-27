@@ -3,18 +3,24 @@ package com.yolo.test.presentation.home.adapters;
 import static com.yolo.test.common.Constants.IMAGE_URL_500;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.yolo.test.Models.MovieResult;
 import com.yolo.test.R;
 import com.yolo.test.common.Constants;
@@ -104,9 +110,22 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularH
 
         private void loadPoster(MovieResult popularResult)
         {
+            movieItemBinding.lottieLoader1.setVisibility(View.VISIBLE);
             Glide.with(movieItemBinding.getRoot().getContext())
                     .load(IMAGE_URL_500+ popularResult.getPosterPath())
-                    //.thumbnail(Glide.with(movieItemBinding.getRoot().getContext()).load(R.drawable.loading))
+                    .addListener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            movieItemBinding.lottieLoader1.setVisibility(View.VISIBLE);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            movieItemBinding.lottieLoader1.setVisibility(View.VISIBLE);
+                            return false;
+                        }
+                    })
                     .into(movieItemBinding.trendingPoster);
 
 
