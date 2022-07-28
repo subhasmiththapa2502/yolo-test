@@ -47,6 +47,9 @@ public class MovieResult implements Parcelable
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("runtime")
+    @Expose
+    private Integer runtime;
     @SerializedName("vote_average")
     @Expose
     private Double voteAverage;
@@ -72,6 +75,30 @@ public class MovieResult implements Parcelable
     @Expose
     private String name;
 
+    public MovieResult(String overview, String releaseDate, String tagline, String title, Boolean adult, String backdropPath, List<Integer> genreIds, String originalLanguage, String originalTitle, String posterPath, Integer voteCount, Integer id, Integer runtime,Double voteAverage, Boolean video, Double popularity, String mediaType, String firstAirDate, String originalName, List<String> originCountry, String name) {
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.tagline = tagline;
+        this.title = title;
+        this.adult = adult;
+        this.backdropPath = backdropPath;
+        this.genreIds = genreIds;
+        this.originalLanguage = originalLanguage;
+        this.originalTitle = originalTitle;
+        this.posterPath = posterPath;
+        this.voteCount = voteCount;
+        this.id = id;
+        this.runtime = runtime;
+        this.voteAverage = voteAverage;
+        this.video = video;
+        this.popularity = popularity;
+        this.mediaType = mediaType;
+        this.firstAirDate = firstAirDate;
+        this.originalName = originalName;
+        this.originCountry = originCountry;
+        this.name = name;
+    }
+
     protected MovieResult(Parcel in) {
         overview = in.readString();
         releaseDate = in.readString();
@@ -92,6 +119,10 @@ public class MovieResult implements Parcelable
             id = null;
         } else {
             id = in.readInt();
+        }if (in.readByte() == 0) {
+            runtime = null;
+        } else {
+            runtime = in.readInt();
         }
         if (in.readByte() == 0) {
             voteAverage = null;
@@ -284,6 +315,13 @@ public class MovieResult implements Parcelable
         this.name = name;
     }
 
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
+    }
 
     @Override
     public int describeContents() {
@@ -312,6 +350,12 @@ public class MovieResult implements Parcelable
         } else {
             parcel.writeByte((byte) 1);
             parcel.writeInt(id);
+        }
+        if (runtime == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(runtime);
         }
         if (voteAverage == null) {
             parcel.writeByte((byte) 0);

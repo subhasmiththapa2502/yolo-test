@@ -23,6 +23,13 @@ public class Movie implements Parcelable
     @Expose
     private Integer totalResults;
 
+    public Movie(Integer page, List<MovieResult> movieResults, Integer totalPages, Integer totalResults) {
+        this.page = page;
+        this.movieResults = movieResults;
+        this.totalPages = totalPages;
+        this.totalResults = totalResults;
+    }
+
     protected Movie(Parcel in) {
         if (in.readByte() == 0) {
             page = null;

@@ -3,6 +3,7 @@ package com.yolo.test.presentation.detail;
 import static com.yolo.test.common.Constants.IMAGE_URL_600_900;
 import static com.yolo.test.common.Constants.IMAGE_URL_780;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -174,6 +175,7 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
                 .into(fragmentDetailBinding.landscape);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setUpDetails(MovieResult moviesResult) {
 
 
@@ -196,8 +198,15 @@ public class DetailFragment extends BottomSheetDialogFragment implements View.On
             fragmentDetailBinding.description.setText(moviesResult.getTagline());
         }
 
-        if (moviesResult.getTagline() != null){
-            fragmentDetailBinding.description.setText(moviesResult.getTagline());
+        if (moviesResult.getReleaseDate() != null){
+            fragmentDetailBinding.releaseDate.setText("Release Date : "+moviesResult.getReleaseDate());
+        }
+
+        if (moviesResult.getVoteAverage() != null){
+            fragmentDetailBinding.voteAverage.setText("Vote Average : "+moviesResult.getVoteAverage());
+        }
+        if (moviesResult.getRuntime() != null){
+            fragmentDetailBinding.totalRunTime.setText("Movie Runtime : "+moviesResult.getRuntime() + " min");
         }
 
 
