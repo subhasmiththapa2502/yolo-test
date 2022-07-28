@@ -1,4 +1,4 @@
-package com.yolo.test.Models.Credits;
+package com.yolo.test.models.Credits;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

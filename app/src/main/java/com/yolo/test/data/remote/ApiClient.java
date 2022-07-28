@@ -2,10 +2,10 @@ package com.yolo.test.data.remote;
 
 import static com.yolo.test.common.Constants.API_KEY;
 
-import com.yolo.test.Models.Credits.Credits;
-import com.yolo.test.Models.Movie;
-import com.yolo.test.Models.MovieResult;
-import com.yolo.test.Models.Trailer.Trailer;
+import com.yolo.test.models.Credits.Credits;
+import com.yolo.test.models.Movie;
+import com.yolo.test.models.MovieResult;
+import com.yolo.test.models.Trailer.Trailer;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Call;
@@ -57,7 +57,7 @@ public interface ApiClient {
     Call<MovieResult> getMovieDetails(@Path("movie_id") int id);
 
 
-    //Get Movie Cast
+    //Get Movie Credits
     @GET("movie/{id}/credits?api_key=" + API_KEY)
     Call<Credits> getMovieCredits(@Path("id") int id);
 

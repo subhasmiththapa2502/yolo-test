@@ -4,10 +4,10 @@ import android.app.Application;
 
 import androidx.lifecycle.ViewModel;
 
-import com.yolo.test.Models.Credits.Credits;
-import com.yolo.test.Models.Movie;
-import com.yolo.test.Models.MovieResult;
-import com.yolo.test.Models.Trailer.Trailer;
+import com.yolo.test.models.Credits.Credits;
+import com.yolo.test.models.Movie;
+import com.yolo.test.models.MovieResult;
+import com.yolo.test.models.Trailer.Trailer;
 import com.yolo.test.data.repository.AppRepository;
 
 import java.util.concurrent.Future;

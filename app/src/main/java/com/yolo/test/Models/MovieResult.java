@@ -1,4 +1,4 @@
-package com.yolo.test.Models;
+package com.yolo.test.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

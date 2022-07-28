@@ -1,4 +1,4 @@
-package com.yolo.test.Models.Credits;
+package com.yolo.test.models.Credits;
 
 import android.os.Parcel;
 import android.os.Parcelable;

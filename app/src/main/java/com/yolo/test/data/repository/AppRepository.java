@@ -1,9 +1,9 @@
 package com.yolo.test.data.repository;
 
-import com.yolo.test.Models.Credits.Credits;
-import com.yolo.test.Models.Movie;
-import com.yolo.test.Models.MovieResult;
-import com.yolo.test.Models.Trailer.Trailer;
+import com.yolo.test.models.Credits.Credits;
+import com.yolo.test.models.Movie;
+import com.yolo.test.models.MovieResult;
+import com.yolo.test.models.Trailer.Trailer;
 import com.yolo.test.data.remote.ApiClient;
 
 import java.util.concurrent.Callable;
@@ -27,6 +27,10 @@ public class AppRepository {
     }
 
 
+    /***
+     *
+     * @return the list of latest movie in an interval of specified time.
+     */
     public Future<Observable<Movie>> latestMovieFutureCall() {
         final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -65,6 +69,11 @@ public class AppRepository {
         };
     }
 
+
+    /***
+     *
+     * @return the popular movie list in an interval of specified time.
+     */
     public Future<Observable<Movie>> popularFutureCall() {
         final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -103,6 +112,10 @@ public class AppRepository {
 
     }
 
+    /***
+     *
+     * @return the top rated movie in an interval of specified time.
+     */
     public Future<Observable<Movie>> topRatedFutureCall() {
         final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -141,6 +154,10 @@ public class AppRepository {
 
     }
 
+    /***
+     *
+     * @return return the upcoming movie list in an interval of specified time.
+     */
     public Future<Observable<Movie>> upComingFutureCall() {
         final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -179,34 +196,63 @@ public class AppRepository {
 
     }
 
-    public Call<Credits> getMovieCredits(int id)
-    {
-        return   apiClient.getMovieCredits(id);
+    /***
+     *
+     * @param id movie Id to fetch the movie credits for
+     * @return the movie credits of the requested movie.
+     */
+    public Call<Credits> getMovieCredits(int id) {
+        return apiClient.getMovieCredits(id);
     }
 
-    public Call<Movie> getPopularOnce()
-    {
+    /***
+     *
+     * @return return popular movie list.
+     */
+    public Call<Movie> getPopularOnce() {
         return apiClient.getPopularOnce();
     }
-    public Call<Movie> getTopRatedOnce()
-    {
+
+
+    /***
+     *
+     * @return return top rated movie list.
+     */
+    public Call<Movie> getTopRatedOnce() {
         return apiClient.getTopRatedOnce();
     }
 
-    public Call<Movie> getUpComingOnce()
-    {
+    /***
+     *
+     * @return return upcoming movie list.
+     */
+    public Call<Movie> getUpComingOnce() {
         return apiClient.getUpComingOnce();
     }
-    public Call<MovieResult> getMovieDetails(int id)
-    {
+
+    /***
+     *
+     * @param id movie Id to fetch the movie details for
+     * @return details of movie
+     */
+    public Call<MovieResult> getMovieDetails(int id) {
         return apiClient.getMovieDetails(id);
     }
-    public Call<Movie> getLatestMovieOnce()
-    {
+
+    /***
+     *
+     * @return the list of latest movies.
+     */
+    public Call<Movie> getLatestMovieOnce() {
         return apiClient.getLatestMovieOnce();
     }
-   public Call<Trailer> getMovieTrailer(int id)
-    {
+
+    /***
+     *
+     * @param id movie Id to fetch the movie trailer for
+     * @return gets the list of trailers and youtube links
+     */
+    public Call<Trailer> getMovieTrailer(int id) {
         return apiClient.getMovieTrailer(id);
     }
 

@@ -21,7 +21,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.yolo.test.Models.MovieResult;
+import com.yolo.test.models.MovieResult;
 import com.yolo.test.R;
 import com.yolo.test.common.Constants;
 import com.yolo.test.databinding.MovieItemBinding;
@@ -35,7 +35,7 @@ public class LatestMovieAdapter extends RecyclerView.Adapter<LatestMovieAdapter.
     LayoutInflater layoutInflater;
     FragmentManager mainFragmentManager;
 
-    public LatestMovieAdapter(List<MovieResult> latestResults,  FragmentManager fragmentManager) {
+    public LatestMovieAdapter(List<MovieResult> latestResults, FragmentManager fragmentManager) {
         this.latestResults = latestResults;
         this.mainFragmentManager = fragmentManager;
     }
@@ -57,9 +57,9 @@ public class LatestMovieAdapter extends RecyclerView.Adapter<LatestMovieAdapter.
 
             DetailFragment bottomSheetFragment = new DetailFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(Constants.MOVIE_ID,latestResults.get(position).getId());
+            bundle.putInt(Constants.MOVIE_ID, latestResults.get(position).getId());
             bottomSheetFragment.setArguments(bundle);
-            bottomSheetFragment.show(mainFragmentManager, latestResults.get(position).getId()+"");
+            bottomSheetFragment.show(mainFragmentManager, latestResults.get(position).getId() + "");
         });
     }
 

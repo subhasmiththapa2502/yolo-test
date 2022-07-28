@@ -21,7 +21,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.yolo.test.Models.MovieResult;
+import com.yolo.test.models.MovieResult;
 import com.yolo.test.R;
 import com.yolo.test.common.Constants;
 import com.yolo.test.databinding.MovieItemBinding;

@@ -38,7 +38,7 @@ import com.thecode.aestheticdialogs.DialogAnimation;
 import com.thecode.aestheticdialogs.DialogStyle;
 import com.thecode.aestheticdialogs.DialogType;
 import com.yolo.test.MainActivity;
-import com.yolo.test.Models.Movie;
+import com.yolo.test.models.Movie;
 import com.yolo.test.R;
 import com.yolo.test.ViewModel.AppViewModel;
 import com.yolo.test.databinding.FragmentHomeBinding;

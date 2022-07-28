@@ -4,8 +4,6 @@ package com.yolo.test.models;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import com.yolo.test.Models.MovieResult;
-
 import org.junit.Test;
 
 import java.util.ArrayList;

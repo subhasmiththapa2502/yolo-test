@@ -1,4 +1,4 @@
-package com.yolo.test.Models.Trailer;
+package com.yolo.test.models.Trailer;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
